@@ -105,7 +105,6 @@
                            (slot-set! obj 'maxhp (+ 1 (random-integer 3)))
                            (call-next-method))))
 
-(define <weapon> (make-class (list <card>) '(damage)))
 
 
 ;; return T if the entity should be buried
