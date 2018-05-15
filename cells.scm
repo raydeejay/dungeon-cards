@@ -82,13 +82,28 @@
                 ((open-chest)
                  (vector-set! *field* to (make <coin>))
                  (glgui-widget-delete gui (slot-ref (vector-ref cells to) 'container))
-                 (vector-set! cells to (make (slot-ref (vector-ref *field* to) 'widget-class) gui to)))
+                 (vector-set! cells to (make (slot-ref (vector-ref *field* to) 'widget-class) gui to))
+                 (update-gui))
                 ((#t)
-                 (move-to-target from to)
-                 (glgui-widget-delete gui (slot-ref (vector-ref cells from) 'container))
-                 (vector-set! cells from (make (slot-ref (vector-ref *field* from) 'widget-class) gui from))
-                 (glgui-widget-delete gui (slot-ref (vector-ref cells to) 'container))
-                 (vector-set! cells to (make (slot-ref (vector-ref *field* to) 'widget-class) gui to)))))))
+                 (add-to-ticker *ticker* 10
+                                (lambda (t)
+                                  (glgui-widget-set! gui
+                                                     (slot-ref (vector-ref cells from) 'container)
+                                                     'xofs
+                                                     (lerp (slot->x from) (slot->x to) t))
+                                  (glgui-widget-set! gui
+                                                     (slot-ref (vector-ref cells from) 'container)
+                                                     'yofs
+                                                     (lerp (slot->y from) (slot->y to) t)))
+                                (lambda ()
+                                  (move-to-target from to)
+                                  (glgui-widget-delete gui (slot-ref (vector-ref cells from) 'container))
+                                  (vector-set! cells from (make (slot-ref (vector-ref *field* from) 'widget-class) gui from))
+                                  (glgui-widget-delete gui (slot-ref (vector-ref cells to) 'container))
+                                  (vector-set! cells to (make (slot-ref (vector-ref *field* to) 'widget-class) gui to))
+                                  (update-gui)
+                                  #t)))
+                ((#f) (update-gui))))))
 
       ;; update all the widgets
       ;; or it can also be done in the handle function!
