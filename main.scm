@@ -31,6 +31,7 @@ MIT License
 (define *punchfx* (audiofile-load "punch"))
 (define *potionfx* (audiofile-load "potion"))
 (define *swordfx* (audiofile-load "sword"))
+(define *chestfx* (audiofile-load "chest"))
 
 ;; --------------------
 ;; entry point
