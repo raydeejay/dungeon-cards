@@ -15,8 +15,7 @@
         (slot-set! cell 'container cont)
         (slot-set! cell 'card card)
         (slot-set! cell 'image image)
-        (glgui-widget-set! cont image 'callback (make-callback cell))))
-    cell)))
+        (glgui-widget-set! cont image 'callback (make-callback cell)))))))
 
 (define <living-cell> (make-class (list <cell>) '(hp)))
 (add-method
@@ -25,9 +24,7 @@
   (list <living-cell>)
   (lambda (call-next-method cell args)
     (call-next-method)
-    (let ((cont (slot-ref cell 'container)))
-      (slot-set! cell 'hp (glgui-label cont 100 140 20 20 "-" calc_14.fnt White)))
-    cell)))
+    (slot-set! cell 'hp (glgui-label (slot-ref cell 'container) 100 140 20 20 "-" calc_14.fnt White)))))
 
 (define <item-cell> (make-class (list <cell>) '(value)))
 (add-method
@@ -36,9 +33,7 @@
   (list <item-cell>)
   (lambda (call-next-method cell args)
     (call-next-method)
-    (let ((cont (slot-ref cell 'container)))
-      (slot-set! cell 'value (glgui-label cont 100 0 20 20 "-" calc_14.fnt White)))
-    cell)))
+    (slot-set! cell 'value (glgui-label (slot-ref cell 'container) 100 0 20 20 "-" calc_14.fnt White)))))
 
 (define <weapon-cell> (make-class (list <cell>) '(damage)))
 (add-method
@@ -47,9 +42,7 @@
   (list <weapon-cell>)
   (lambda (call-next-method cell args)
     (call-next-method)
-    (let ((cont (slot-ref cell 'container)))
-      (slot-set! cell 'damage (glgui-label cont 100 0 20 20 "-" calc_14.fnt White)))
-    cell)))
+    (slot-set! cell 'damage (glgui-label (slot-ref cell 'container) 100 0 20 20 "-" calc_14.fnt White)))))
 
 (define <hero-cell> (make-class (list <living-cell>) '(weapon)))
 (add-method
@@ -58,9 +51,7 @@
   (list <hero-cell>)
   (lambda (call-next-method cell args)
     (call-next-method)
-    (let ((cont (slot-ref cell 'container)))
-      (slot-set! cell 'weapon (glgui-label cont 0 0 20 20 "-" calc_14.fnt White)))
-    cell)))
+    (slot-set! cell 'weapon (glgui-label (slot-ref cell 'container) 0 0 20 20 "-" calc_14.fnt White)))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -99,7 +90,7 @@
 
       ;; update all the widgets
       (update-gui)
-      
+
       ;; check for death
       (if (< (slot-ref *hero* 'hp) 1)
           (begin (let ((m (settings-ref "money")))
@@ -185,4 +176,3 @@
   (do ((i 0 (+ i 1))) ((= i 9))
     (update (vector-ref cells i)))
   (glgui-widget-set! gui coins-ui 'label (number->string (slot-ref *hero* 'coins))))
-
