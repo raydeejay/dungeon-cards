@@ -21,5 +21,5 @@
     (if (not skipevent) (glgui-event gui t x y))))
 
 (define (game-over-end)
-  (glgui-widget-delete gui restart-button)
-  (glgui-widget-delete gui death-text))
+  (for-each (lambda (x) (glgui-widget-delete gui x))
+            (table-ref gui 'widget-list)))

@@ -27,6 +27,5 @@
     (if (not skipevent) (glgui-event gui t x y))))
 
 (define (menu-end)
-  (glgui-widget-delete gui title)
-  (glgui-widget-delete gui start-button)
-  (glgui-widget-delete gui coins-ui))
+  (for-each (lambda (x) (glgui-widget-delete gui x))
+            (table-ref gui 'widget-list)))

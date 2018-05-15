@@ -45,8 +45,5 @@
     (glgui-widget-set! gui dungeon-name 'align GUI_ALIGNRIGHT)))
 
 (define (game-end)
-  (do ((i 0 (+ i 1))) ((= i 9))
-    (glgui-widget-delete gui (slot-ref (vector-ref cells i) 'container)))
-  (glgui-widget-delete gui dungeon-name)
-  (glgui-widget-delete gui back-button)
-  (glgui-widget-delete gui coins-ui))
+  (for-each (lambda (x) (glgui-widget-delete gui x))
+            (table-ref gui 'widget-list)))
