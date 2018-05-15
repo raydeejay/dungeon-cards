@@ -6,12 +6,8 @@
 (define (menu-draw)
   (let* ((w (glgui-width-get))
          (h (glgui-height-get)))
-    ;; menu screen
-    ;;  title
-    ;;  start button
     (set! coins-ui (glgui-label gui 0 (- h 20) 110 16
-                                (number->string (settings-ref "money") ;; (lmdb-ref *db* 'money)
-                                 ) calc_14.fnt White))
+                                (number->string (settings-ref "money")) calc_14.fnt White))
     (set! title (glgui-image gui 20 360 360 120 title.img White))
     (set! start-button (glgui-button-string gui 120 200 160 40 "START" calc_24.fnt
                                             (lambda args
