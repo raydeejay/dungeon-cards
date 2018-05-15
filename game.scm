@@ -6,6 +6,7 @@
 
 (define (game-handle t x y)
   ;;(tick-fn)
+  (update-gui)
   (let ((skipevent #f))
     (if (= t EVENT_KEYPRESS)
         (cond ((= x EVENT_KEYBACK)       (terminate))

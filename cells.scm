@@ -91,7 +91,8 @@
                  (vector-set! cells to (make (slot-ref (vector-ref *field* to) 'widget-class) gui to)))))))
 
       ;; update all the widgets
-      (update-gui)
+      ;; or it can also be done in the handle function!
+      ;;(update-gui)
 
       ;; check for death
       (if (< (slot-ref *hero* 'hp) 1)
