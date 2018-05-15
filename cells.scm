@@ -85,6 +85,13 @@
                  (vector-set! cells to (make (slot-ref (vector-ref *field* to) 'widget-class) gui to))
                  (update-gui))
                 ((#t)
+                 ;; move the widget to the back to ensure it's drawn on top of anything else
+                 (let ((lista (table-ref gui 'widget-list)))
+                   (table-set! gui 'widget-list
+                               (let ((h (list-keep lista
+                                                   (lambda (x)
+                                                     (equal? x (slot-ref (vector-ref cells from) 'container))))))
+                                 (append (list-delete-item lista (car h)) h))))
                  (add-to-ticker *ticker* 10
                                 (lambda (t)
                                   (glgui-widget-set! gui
