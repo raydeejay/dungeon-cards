@@ -1,5 +1,8 @@
 (define dungeon-name #f)
 (define back-button #f)
+(define power-1-ui #f)
+(define power-2-ui #f)
+(define power-3-ui #f)
 (define coins-ui #f)
 (define cells (make-vector 9))
 (define hero-cell 4)
@@ -25,6 +28,9 @@
     ;; power1 power2 power3  ----- coins (multiplier)
     ;; (set! hp-ui (glgui-label gui 0 (- h 20) 110 16
     ;;                             (number->string (slot-ref *hero* 'hp)) calc_14.fnt White))
+    (set! power-1-ui (glgui-image gui 4 (- h 20) 16 16 heart.img White))
+    (set! power-2-ui (glgui-image gui 24 (- h 20) 16 16 smallcoin.img White))
+    (set! power-3-ui (glgui-image gui 44 (- h 20) 16 16 smallcoin.img White))
     (set! coins-ui (glgui-label gui (- w 120) (- h 20) 110 16
                                 (number->string (slot-ref *hero* 'coins)) calc_14.fnt White))
     (glgui-widget-set! gui coins-ui 'align GUI_ALIGNRIGHT)
