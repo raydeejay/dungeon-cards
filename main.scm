@@ -14,6 +14,7 @@ MIT License
 
 ;; include files
 (include "utils.scm")
+(include "ticker.scm")
 (include "menu.scm")
 (include "cards.scm")
 (include "cells.scm")

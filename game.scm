@@ -6,10 +6,12 @@
 (define coins-ui #f)
 (define cells (make-vector 9))
 (define hero-cell 4)
+(define *ticker* #f)
 
 (define (game-handle t x y)
   ;;(tick-fn)
-  (update-gui)
+  ;; (update-gui)
+  (tick *ticker*)
   (let ((skipevent #f))
     (if (= t EVENT_KEYPRESS)
         (cond ((= x EVENT_KEYBACK)       (terminate))
@@ -23,6 +25,7 @@
          (h (glgui-height-get)))
     (set! *hero* (make <hero>))
     (set! *field* (generate-field))
+    (set! *ticker* (make <ticker>))
 
     ;; dungeon screen
     ;; power1 power2 power3  ----- coins (multiplier)
