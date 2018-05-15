@@ -134,7 +134,7 @@
 (add-method interact
             (make-method (list <hero> <chest>)
                          (lambda (call-next-method hero chest)
-                           (audiofile-play *coinfx*)
+                           (audiofile-play *chestfx*)
                            'open-chest)))
 
 (add-method interact
