@@ -107,8 +107,8 @@
                    ;; (lmdb-set! *db* 'money (+ (slot-ref *hero* 'coins) m))
                    (settings-set! "money" (+ (slot-ref *hero* 'coins) m)))
                  (game-end)
-                 (menu-draw)
-                 (set! handle-fn menu-handle)))
+                 (game-over-draw)
+                 (set! handle-fn game-over-handle)))
       #t))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
