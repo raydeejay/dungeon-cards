@@ -25,7 +25,7 @@
   (lambda (call-next-method cell args)
     (call-next-method)
     (glgui-image (slot-ref cell 'container) 100 140 20 20 heart.img White)
-    (slot-set! cell 'hp (glgui-label (slot-ref cell 'container) 60 140 40 20 "-" calc_14.fnt White))
+    (slot-set! cell 'hp (glgui-label (slot-ref cell 'container) 40 140 60 20 "-" calc_14.fnt White))
     (glgui-widget-set! (slot-ref cell 'container) (slot-ref cell 'hp) 'align GUI_ALIGNRIGHT))))
 
 (define <item-cell> (make-class (list <cell>) '(value)))
