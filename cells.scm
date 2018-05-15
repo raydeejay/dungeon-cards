@@ -77,7 +77,7 @@
  make-callback
  (make-method
   (list <cell>)
-  (lambda (cnm cell)
+  (lambda (call-next-method cell)
     (lambda args
       ;; (pretty-print (table->list (car args))) (newline)
       ;; (pretty-print (table->list (cadr args))) (newline)
