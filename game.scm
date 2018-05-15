@@ -1,3 +1,9 @@
+(define dungeon-name #f)
+(define back-button #f)
+(define coins-ui #f)
+(define cells (make-vector 9))
+(define hero-cell 4)
+
 (define (game-handle t x y)
   ;;(tick-fn)
   (let ((skipevent #f))

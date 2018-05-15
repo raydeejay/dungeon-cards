@@ -12,6 +12,7 @@ MIT License
 (define *width* 400)
 (define *height* 600)
 
+;; include files
 (include "utils.scm")
 (include "menu.scm")
 (include "cards.scm")
@@ -21,50 +22,8 @@ MIT License
 (include "game-over.scm")
 (include "anim.scm")
 
+;; global variables
 (define gui #f)
-(define dungeon-name #f)
-(define back-button #f)
-(define coins-ui #f)
-(define cells (make-vector 9))
-(define hero-cell 4)
-
-;; update
-;; -------------------
-;; cards
-(define (xy->slot x y)
-  (cond ((< (- x 20) 120)
-         (cond ((< (- y 60) 160) 0)
-               ((< (- y 60) 320) 3)
-               ((< (- y 60) 480) 6)
-               (#t 0)))
-        ((< (- x 20) 240)
-         (cond ((< (- y 60) 160) 1)
-               ((< (- y 60) 320) 4)
-               ((< (- y 60) 480) 7)
-               (#t 0)))
-        ((< (- x 20) 360)
-         (cond ((< (- y 60) 160) 2)
-               ((< (- y 60) 320) 5)
-               ((< (- y 60) 480) 8)
-               (#t 0)))))
-
-(define (slot->x slot)
-  (+ 20
-     (case slot
-       ((0 3 6) 0)
-       ((1 4 7) 120)
-       ((2 5 8) 240))))
-
-(define (slot->y slot)
-  (+ 60
-     (case slot
-       ((0 1 2) 0)
-       ((3 4 5) 160)
-       ((6 7 8) 320))))
-
-
-;; screens
-(define handle-fn menu-handle)
 
 ;; audio
 (audiofile-init)
@@ -75,7 +34,9 @@ MIT License
 
 ;; --------------------
 ;; entry point
+
 ;;(define *db* #f)
+(define handle-fn menu-handle)
 
 (main
  ;; initialization
