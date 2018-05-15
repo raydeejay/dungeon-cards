@@ -168,10 +168,11 @@
     (let* ((cont (slot-ref cell 'container))
            (weapon (slot-ref cell 'weapon))
            (card (slot-ref cell 'card))
+           (hp (slot-ref cell 'hp))
            (w (slot-ref card 'weapon)))
-      (glgui-widget-set! cont weapon 'label
-                         (if w (number->string (slot-ref w 'damage)) "")))
-    cell)))
+      (glgui-widget-set! cont weapon 'label (if w (number->string (slot-ref w 'damage)) ""))
+      (glgui-widget-set! cont hp 'label (string-append (number->string (slot-ref card 'hp))
+                                                       "/" (number->string (slot-ref card 'maxhp))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; UPDATE GUI
