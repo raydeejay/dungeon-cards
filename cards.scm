@@ -1,61 +1,10 @@
 (define <card> (make-class (list <object>) '(widget-class image)))
-
-(define <hero> (make-class (list <card>) '(hp maxhp coins weapon)))
-
-(define <treasure> (make-class (list <card>) '(value)))
-(define <coin> (make-class (list <treasure>) '()))
-
-(define <potion> (make-class (list <card>) '(value)))
-
-(define <chest> (make-class (list <card>) '()))
-
-(define <weapon> (make-class (list <card>) '(damage)))
-
-(define <enemy> (make-class (list <card>) '(hp maxhp)))
-(define <demon> (make-class (list <enemy>) '()))
-(define <skeleton> (make-class (list <enemy>) '()))
-(define <goblin> (make-class (list <enemy>) '()))
-(define <slime> (make-class (list <enemy>) '()))
-(define <rat> (make-class (list <enemy>) '()))
-
-(define <weapon> (make-class (list <card>) '(damage)))
-
-
 (add-method initialize
             (make-method (list <card>)
                          (lambda (cnm obj args)
                            (slot-set! obj 'widget-class <cell>))))
 
-(add-method initialize
-            (make-method (list <coin>)
-                         (lambda (cnm obj args)
-                           (cnm)
-                           (slot-set! obj 'widget-class <item-cell>)
-                           (slot-set! obj 'image coin.img)
-                           (slot-set! obj 'value (+ 1 (random-integer 9))))))
-
-(add-method initialize
-            (make-method (list <potion>)
-                         (lambda (cnm obj args)
-                           (cnm)
-                           (slot-set! obj 'widget-class <item-cell>)
-                           (slot-set! obj 'image potion.img)
-                           (slot-set! obj 'value (+ 1 (random-integer 9))))))
-
-(add-method initialize
-            (make-method (list <chest>)
-                         (lambda (cnm obj args)
-                           (cnm)
-                           (slot-set! obj 'image chest.img))))
-
-(add-method initialize
-            (make-method (list <weapon>)
-                         (lambda (cnm obj args)
-                           (cnm)
-                           (slot-set! obj 'widget-class <weapon-cell>)
-                           (slot-set! obj 'image weapon.img)
-                           (slot-set! obj 'damage (+ 1 (random-integer 9))))))
-
+(define <hero> (make-class (list <card>) '(hp maxhp coins weapon)))
 (add-method initialize
             (make-method (list <hero>)
                          (lambda (cnm obj args)
@@ -68,6 +17,47 @@
                            (slot-set! obj 'weapon #f))))
 
 
+(define <treasure> (make-class (list <card>) '(value)))
+
+(define <coin> (make-class (list <treasure>) '()))
+(add-method initialize
+            (make-method (list <coin>)
+                         (lambda (cnm obj args)
+                           (cnm)
+                           (slot-set! obj 'widget-class <item-cell>)
+                           (slot-set! obj 'image coin.img)
+                           (slot-set! obj 'value (+ 1 (random-integer 9))))))
+
+
+(define <potion> (make-class (list <card>) '(value)))
+(add-method initialize
+            (make-method (list <potion>)
+                         (lambda (cnm obj args)
+                           (cnm)
+                           (slot-set! obj 'widget-class <item-cell>)
+                           (slot-set! obj 'image potion.img)
+                           (slot-set! obj 'value (+ 1 (random-integer 9))))))
+
+
+(define <chest> (make-class (list <card>) '()))
+(add-method initialize
+            (make-method (list <chest>)
+                         (lambda (cnm obj args)
+                           (cnm)
+                           (slot-set! obj 'image chest.img))))
+
+
+(define <weapon> (make-class (list <card>) '(damage)))
+(add-method initialize
+            (make-method (list <weapon>)
+                         (lambda (cnm obj args)
+                           (cnm)
+                           (slot-set! obj 'widget-class <weapon-cell>)
+                           (slot-set! obj 'image weapon.img)
+                           (slot-set! obj 'damage (+ 1 (random-integer 9))))))
+
+
+(define <enemy> (make-class (list <card>) '(hp maxhp)))
 (add-method initialize
             (make-method (list <enemy>)
                          (lambda (call-next-method obj args)
@@ -75,34 +65,7 @@
                            (slot-set! obj 'widget-class <living-cell>)
                            (slot-set! obj 'hp (slot-ref obj 'maxhp)))))
 
-(add-method initialize
-            (make-method (list <rat>)
-                         (lambda (call-next-method obj args)
-                           (slot-set! obj 'image rat.img)
-                           (slot-set! obj 'maxhp (+ 1 (random-integer 3)))
-                           (call-next-method))))
-
-(add-method initialize
-            (make-method (list <slime>)
-                         (lambda (call-next-method obj args)
-                           (slot-set! obj 'image slime.img)
-                           (slot-set! obj 'maxhp (+ 1 (random-integer 5)))
-                           (call-next-method))))
-
-(add-method initialize
-            (make-method (list <skeleton>)
-                         (lambda (call-next-method obj args)
-                           (slot-set! obj 'image skeleton.img)
-                           (slot-set! obj 'maxhp (+ 1 (random-integer 4)))
-                           (call-next-method))))
-
-(add-method initialize
-            (make-method (list <goblin>)
-                         (lambda (call-next-method obj args)
-                           (slot-set! obj 'image goblin.img)
-                           (slot-set! obj 'maxhp (+ 1 (random-integer 6)))
-                           (call-next-method))))
-
+(define <demon> (make-class (list <enemy>) '()))
 (add-method initialize
             (make-method (list <demon>)
                          (lambda (call-next-method obj args)
@@ -110,6 +73,39 @@
                            (slot-set! obj 'maxhp (+ 1 (random-integer 8)))
                            (call-next-method))))
 
+(define <skeleton> (make-class (list <enemy>) '()))
+(add-method initialize
+            (make-method (list <skeleton>)
+                         (lambda (call-next-method obj args)
+                           (slot-set! obj 'image skeleton.img)
+                           (slot-set! obj 'maxhp (+ 1 (random-integer 4)))
+                           (call-next-method))))
+
+(define <goblin> (make-class (list <enemy>) '()))
+(add-method initialize
+            (make-method (list <goblin>)
+                         (lambda (call-next-method obj args)
+                           (slot-set! obj 'image goblin.img)
+                           (slot-set! obj 'maxhp (+ 1 (random-integer 6)))
+                           (call-next-method))))
+
+(define <slime> (make-class (list <enemy>) '()))
+(add-method initialize
+            (make-method (list <slime>)
+                         (lambda (call-next-method obj args)
+                           (slot-set! obj 'image slime.img)
+                           (slot-set! obj 'maxhp (+ 1 (random-integer 5)))
+                           (call-next-method))))
+
+(define <rat> (make-class (list <enemy>) '()))
+(add-method initialize
+            (make-method (list <rat>)
+                         (lambda (call-next-method obj args)
+                           (slot-set! obj 'image rat.img)
+                           (slot-set! obj 'maxhp (+ 1 (random-integer 3)))
+                           (call-next-method))))
+
+(define <weapon> (make-class (list <card>) '(damage)))
 
 
 ;; return T if the entity should be buried
