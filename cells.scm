@@ -66,6 +66,11 @@
 ;; CALLBACK
 (define make-callback (make-generic))
 
+(define (open-chest pos)
+  (vector-set! *field* pos (make <coin>))
+  (glgui-widget-delete gui (slot-ref (vector-ref cells pos) 'container))
+  (vector-set! cells pos (make (slot-ref (vector-ref *field* pos) 'widget-class) gui pos)))
+
 (add-method
  make-callback
  (make-method
@@ -79,13 +84,9 @@
         (if (can-interact? from to)
             (let ((action (interact (vector-ref *field* from) (vector-ref *field* to))))
               (case action
-                ((open-chest)
-                 (vector-set! *field* to (make <coin>))
-                 (glgui-widget-delete gui (slot-ref (vector-ref cells to) 'container))
-                 (vector-set! cells to (make (slot-ref (vector-ref *field* to) 'widget-class) gui to))
-                 (update-gui))
+                ((open-chest) (open-chest to) (update-gui))
                 ((#t)
-                 ;; move the widget to the back to ensure it's drawn on top of anything else
+                 ;; move the widget to the back of the gui's widget-list to ensure it's drawn on top of anything else
                  (let ((lista (table-ref gui 'widget-list)))
                    (table-set! gui 'widget-list
                                (let ((h (list-keep lista
@@ -94,20 +95,21 @@
                                  (append (list-delete-item lista (car h)) h))))
                  (add-to-ticker *ticker* 10
                                 (lambda (t)
-                                  (glgui-widget-set! gui
-                                                     (slot-ref (vector-ref cells from) 'container)
-                                                     'xofs
+                                  (glgui-widget-set! gui (slot-ref (vector-ref cells from) 'container) 'xofs
                                                      (lerp (slot->x from) (slot->x to) t))
-                                  (glgui-widget-set! gui
-                                                     (slot-ref (vector-ref cells from) 'container)
-                                                     'yofs
+                                  (glgui-widget-set! gui (slot-ref (vector-ref cells from) 'container) 'yofs
                                                      (lerp (slot->y from) (slot->y to) t)))
                                 (lambda ()
                                   (move-to-target from to)
+                                  ;; remove the old widgets and make
+                                  ;; new ones, because each card
+                                  ;; requires its own kind of widget
                                   (glgui-widget-delete gui (slot-ref (vector-ref cells from) 'container))
-                                  (vector-set! cells from (make (slot-ref (vector-ref *field* from) 'widget-class) gui from))
+                                  (vector-set! cells from
+                                               (make (slot-ref (vector-ref *field* from) 'widget-class) gui from))
                                   (glgui-widget-delete gui (slot-ref (vector-ref cells to) 'container))
-                                  (vector-set! cells to (make (slot-ref (vector-ref *field* to) 'widget-class) gui to))
+                                  (vector-set! cells to
+                                               (make (slot-ref (vector-ref *field* to) 'widget-class) gui to))
                                   (update-gui)
                                   #t)))
                 ((#f) (update-gui))))))
