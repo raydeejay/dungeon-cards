@@ -76,7 +76,7 @@
       ;; (pretty-print (table->list (cadr args))) (newline)
       (let ((from hero-cell)
             (to (compute-slot cell)))
-        (if (can-move from to)
+        (if (can-interact? from to)
             (let ((action (interact (vector-ref *field* from) (vector-ref *field* to))))
               (case action
                 ((open-chest)

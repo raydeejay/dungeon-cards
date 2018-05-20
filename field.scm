@@ -46,7 +46,7 @@
 (define *field* (make-vector 9))
 (define *hero* (make <hero>))
 
-(define (can-move from to)
+(define (can-interact? from to)
   (member to (find from *valid-moves*)))
 
 (define (move-card from to)
