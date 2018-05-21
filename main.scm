@@ -14,6 +14,7 @@ MIT License
 
 ;; include files
 (include "utils.scm")
+(include "easing.scm")
 (include "ticker.scm")
 (include "menu.scm")
 (include "cards.scm")
@@ -21,10 +22,12 @@ MIT License
 (include "field.scm")
 (include "game.scm")
 (include "game-over.scm")
-(include "anim.scm")
+;;(include "particles.scm")
 
 ;; global variables
 (define gui #f)
+(define gui-canvas #f)
+(define gui-particles #f)
 
 ;; audio
 (audiofile-init)

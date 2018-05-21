@@ -4,8 +4,6 @@
 
 (define (random-elt l) (list-ref l (random-integer (length l))))
 
-(define (lerp a b t) (+ (* (- 1 t) a) (* t b)))
-
 (define (nth n l)
   (if (or (>= n (length l)) (< n 0))
       (error "Index out of bounds.")

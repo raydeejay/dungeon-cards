@@ -39,12 +39,16 @@
     (glgui-widget-set! gui coins-ui 'align GUI_ALIGNRIGHT)
 
 
+    ;; particle layer on top
+    (set! gui-canvas (glgui-container gui 0 0 w h))
+    (set! gui-particles (glgui-container gui 0 0 w h))
+
     ;; cells
     (do ((i 0 (+ i 1))) ((= i 9) (set! hero-cell 4))
       (let ((class (slot-ref (vector-ref *field* i) 'widget-class)))
-        (vector-set! cells i (make class gui i))))
+        (vector-set! cells i (make class gui-canvas i))))
     (update-gui)
-    
+
     ;; back button ------- dungeon name
     (set! back-button (glgui-button-string gui 0 0 60 40 "<<" calc_14.fnt
                                            (lambda args

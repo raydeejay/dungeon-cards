@@ -38,7 +38,7 @@
     (if (> (slot-ref obj 'count) (slot-ref obj 'max))
         (begin (slot-set! obj 'dead #t)
                ((slot-ref obj 'end-fn)))
-        ((slot-ref obj 'fn) (/ (slot-ref obj 'count) (slot-ref obj 'max)))))))
+        ((slot-ref obj 'fn) (slot-ref obj 'count) (slot-ref obj 'max))))))
 
 (define (add-to-ticker ticker ticks fn end-fn)
   (slot-set! ticker 'elements
