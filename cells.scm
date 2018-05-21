@@ -78,7 +78,7 @@
                      (glgui-widget-set! gui-canvas cell-to 'yofs (easeinout-quad (slot->y to) (+ 80 (slot->y to)) t d))))
                  (lambda () #t))
   ;; move the hero card to its new slot
-  (add-to-ticker *ticker* 100
+  (add-to-ticker *ticker* 20
                  (lambda (t d)
                    (let ((cell-from (slot-ref (vector-ref cells from) 'container)))
                      (glgui-widget-set! gui-canvas cell-from 'xofs (easeinout-quad (slot->x from) (slot->x to) t d))
