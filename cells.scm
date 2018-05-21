@@ -65,6 +65,22 @@
                                       (equal? x w)))))
                   (append (list-delete-item lista (car h)) h)))))
 
+(define (add-particles to)
+  ;; add some particles
+  (let ((x0 (+ 60 (slot->x to)))
+        (y0 (+ 80 (slot->y to)))
+        (targets `((50 . 70) (-50 . 70) (50 . -70) (-50 . -70))))
+    (do ((i 0 (+ i 1))) ((= i 4))
+      (let ((part (glgui-sprite gui-particles 'x x0 'y x0 'image star.img)))
+        (add-to-ticker *ticker* 30
+                       (lambda (t d)
+                         (glgui-widget-set! gui-particles part 'x
+                                            (easeinout-quad x0 (+ x0 (car (nth i targets))) t d))
+                         (glgui-widget-set! gui-particles part 'y
+                                            (easeinout-quad y0 (+ y0 (cdr (nth i targets))) t d)))
+                       (lambda ()
+                         (glgui-widget-delete gui-particles part)))))))
+
 (define (kill-cell from to)
   ;; move the widget to the back of the gui's widget-list to ensure it's drawn on top of anything else
   (move-to-front (slot-ref (vector-ref cells from) 'container))
@@ -95,19 +111,7 @@
                    (vector-set! cells to
                                 (make (slot-ref (vector-ref *field* to) 'widget-class) gui-canvas to))
                    ;; update the stats displays and such
-                   (update-gui)))
-  ;; add some particles
-  (let ((x0 (+ 60 (slot->x to)))
-        (y0 (+ 80 (slot->y to)))
-        (targets `((50 . 70) (-50 . 70) (50 . -70) (-50 . -70))))
-    (do ((i 0 (+ i 1))) ((= i 4))
-      (let ((part (glgui-sprite gui-particles 'x x0 'y x0 'image star.img)))
-        (add-to-ticker *ticker* 30
-                       (lambda (t d)
-                         (glgui-widget-set! gui-particles part 'x (easeinout-quad x0 (+ x0 (car (nth i targets))) t d))
-                         (glgui-widget-set! gui-particles part 'y (easeinout-quad y0 (+ y0 (cdr (nth i targets))) t d)))
-                       (lambda ()
-                         (glgui-widget-delete gui-particles part)))))))
+                   (update-gui))))
 
 (define-method make-callback (<cell>) (cell)
   (lambda args
@@ -118,8 +122,8 @@
       (if (can-interact? from to)
           (let ((action (interact (vector-ref *field* from) (vector-ref *field* to))))
             (case action
-              ((open-chest) (open-chest to) (update-gui))
-              ((#t) (kill-cell from to))
+              ((open-chest) (open-chest to) (update-gui) (add-particles to))
+              ((#t) (kill-cell from to) (add-particles to))
               ((#f) (update-gui))))))
     ;; check for death
     (if (< (slot-ref *hero* 'hp) 1)
