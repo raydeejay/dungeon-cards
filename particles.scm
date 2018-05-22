@@ -13,6 +13,9 @@
 ;; create a particle source
 ;; add the source to the engine and it will create particles by itself
 
+;; deleting sources?
+;; ephemeral sources? (have a ttl or other kind of dying condition)
+
 (define <particle>
   (make-class (list <object>)
               '(texture position velocity angle angular-velocity color size ttl sprite)))
