@@ -72,6 +72,7 @@
 ;; TODO namespace this or something...
 ;; (define update (make-generic))
 
+;; calling this method makes thing about 8x slower, as noted below
 (define-method update (<particle> <procedure>) (obj fn)
   (fn obj))
 
@@ -80,17 +81,19 @@
   ;; add new particles
   (let ((parts (<- obj particles)))
     (do ((i 0 (+ i 1))) ((= i (vector-length parts)))
-      (cond ((not (vector-ref parts i))
-             ;;(display (string-append "GENERATING #" (number->string i))) (newline)
-             (vector-set! parts i ((<- obj generate-fn)
-                                   (<- obj location x) (<- obj location y)
-                                   2 7)))
-            ((<= (<- (vector-ref parts i) ttl) 0)
-             ;;(display (string-append "RECYCLING #" (number->string i))) (newline)
-             (recycle-particle1 (vector-ref parts i)
-                                (<- obj location x) (<- obj location y)
-                                2 7)))      
-      (update (vector-ref parts i) (<- obj update-fn)))
+      (let ((locx (+ (<- obj location x) (* 10 (- (random-integer 5) 2))))
+            (locy (+ (<- obj location y) (* 10 (- (random-integer 5) 2))))
+            (vx (- (random-integer 21) 10))
+            (vy (- (random-integer 31) 15)))
+        (cond ((not (vector-ref parts i))
+               ;;(display (string-append "GENERATING #" (number->string i))) (newline)
+               (vector-set! parts i ((<- obj generate-fn) locx locy vx vy)))
+              ((<= (<- (vector-ref parts i) ttl) 0)
+               ;;(display (string-append "RECYCLING #" (number->string i))) (newline)
+               (recycle-particle1 (vector-ref parts i) locx locy vx vy))))
+      ;; about 8x performance improvement!
+      ;;(update (vector-ref parts i) (<- obj update-fn))
+      ((<- obj update-fn) (vector-ref parts i)))
     
     ;;(display (string-append "Particle count: " (number->string (vector-length parts)))) (newline)
     ))
@@ -104,9 +107,12 @@
 
 (define draw (make-generic))
 (define-method draw (<particle>) (obj)
-  (glgui-widget-set! gui-particles (<- obj sprite) 'x (<- obj position x))
-  (glgui-widget-set! gui-particles (<- obj sprite) 'y (<- obj position y))
-  (glgui-widget-set! gui-particles (<- obj sprite) 'angle (<- obj angle)))
+  ;; (glgui-widget-set! gui-particles (<- obj sprite) 'x (<- obj position x))
+  ;; (glgui-widget-set! gui-particles (<- obj sprite) 'y (<- obj position y))
+  ;; (glgui-widget-set! gui-particles (<- obj sprite) 'angle (<- obj angle))
+  (table-set! (<- obj sprite) 'x (<- obj position x))
+  (table-set! (<- obj sprite) 'y (<- obj position y))
+  (table-set! (<- obj sprite) 'angle (<- obj angle)))
 
 (define-method draw (<particle-source>) (obj)
   (let ((parts (<- obj particles)))

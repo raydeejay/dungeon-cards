@@ -78,7 +78,7 @@
         (y0 (+ 80 (slot->y to)))
         (targets `((50 . 70) (-50 . 70) (50 . -70) (-50 . -70))))
     ;; TODO fix the particle engine xD
-    ;;(add-source *particle-engine* (make-particle-source x0 y0 simple-update-particle make-particle1))
+    (add-source *particle-engine* (make-particle-source x0 y0 simple-update-particle make-particle1))
     (do ((i 0 (+ i 1))) ((= i 4))
       (add-particle image x0 y0 (car (nth i targets)) (cdr (nth i targets)) 30 easeinout-quad))))
 
