@@ -102,7 +102,7 @@
   (for-each update (<- obj sources)))
 
 (define add-source (make-generic))
-(define-method add-source (<particle-engine>) (obj source)
+(define-method add-source (<particle-engine> <particle-source>) (obj source)
   (slot-set! obj 'sources (cons source (<- obj sources))))
 
 (define draw (make-generic))
