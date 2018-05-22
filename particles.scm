@@ -108,13 +108,6 @@
 (define-method add-source (<particle-engine> <particle-source>) (obj source)
   (slot-set! obj 'sources (cons source (<- obj sources))))
 
-(define draw (make-generic))
-(define-method draw (<particle>) (obj)
-  ;; (glgui-widget-set! gui-particles (<- obj sprite) 'x (<- obj position x))
-  ;; (glgui-widget-set! gui-particles (<- obj sprite) 'y (<- obj position y))
-  ;; (glgui-widget-set! gui-particles (<- obj sprite) 'angle (<- obj angle))
-  (table-set! (<- obj sprite) 'x (<- obj position x))
-  (table-set! (<- obj sprite) 'y (<- obj position y))
 (define destroy (make-generic))
 (define-method destroy (<particle-source>) (obj)
   (slot-set! obj 'particles
@@ -131,6 +124,13 @@
   (destroy source)
   (slot-set! obj 'sources (list-delete-item (<- obj sources) source)))
 
+(define draw (make-generic))
+(define-method draw (<particle>) (obj)
+  ;; (glgui-widget-set! gui-particles (<- obj sprite) 'x (<- obj position x))
+  ;; (glgui-widget-set! gui-particles (<- obj sprite) 'y (<- obj position y))
+  ;; (glgui-widget-set! gui-particles (<- obj sprite) 'angle (<- obj angle))
+  (table-set! (<- obj sprite) 'x (<- obj position x))
+  (table-set! (<- obj sprite) 'y (<- obj position y))
   (table-set! (<- obj sprite) 'angle (<- obj angle)))
 
 (define-method draw (<particle-source>) (obj)
