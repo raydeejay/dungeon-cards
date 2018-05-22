@@ -31,8 +31,6 @@
 
     ;; dungeon screen
     ;; power1 power2 power3  ----- coins (multiplier)
-    ;; (set! hp-ui (glgui-label gui 0 (- h 20) 110 16
-    ;;                             (number->string (slot-ref *hero* 'hp)) calc_14.fnt White))
     (set! power-1-ui (glgui-image gui 4 (- h 20) 16 16 heart.img White))
     (set! power-2-ui (glgui-image gui 24 (- h 20) 16 16 smallcoin.img White))
     (set! power-3-ui (glgui-image gui 44 (- h 20) 16 16 smallcoin.img White))
