@@ -21,3 +21,9 @@
   (if (null? list)
       init
       (reduce fn (fn init (car list)) (cdr list))))
+
+(define (bound?% name)
+  (not (##unbound? (##global-var-ref (##make-global-var name)))))
+
+(define-macro (bound name)
+  `(bound?% ',name))
