@@ -12,6 +12,8 @@
   ;;(tick-fn)
   ;; (update-gui)
   (tick *ticker*)
+  (update *particle-engine*)
+  (draw *particle-engine*)
   (let ((skipevent #f))
     (if (= t EVENT_KEYPRESS)
         (cond ((= x EVENT_KEYBACK)       (terminate))
@@ -42,6 +44,7 @@
     ;; particle layer on top
     (set! gui-canvas (glgui-container gui 0 0 w h))
     (set! gui-particles (glgui-container gui 0 0 w h))
+    (set! *particle-engine* (make <particle-engine>))
 
     ;; cells
     (do ((i 0 (+ i 1))) ((= i 9) (set! hero-cell 4))

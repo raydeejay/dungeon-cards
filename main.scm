@@ -22,7 +22,7 @@ MIT License
 (include "field.scm")
 (include "game.scm")
 (include "game-over.scm")
-;;(include "particles.scm")
+(include "particles.scm")
 
 ;; global variables
 (define gui #f)

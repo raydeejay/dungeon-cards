@@ -116,7 +116,7 @@
                            (slot-set! hero 'coins (+ (slot-ref hero 'coins)
                                                      (slot-ref coin 'value)))
                            (audiofile-play *coinfx*)
-                           #t)))
+                           'coin)))
 
 (add-method interact
             (make-method (list <hero> <potion>)
@@ -124,7 +124,7 @@
                            (audiofile-play *potionfx*)
                            (slot-set! hero 'hp (+ (slot-ref hero 'hp)
                                                   (slot-ref potion 'value)))
-                           #t)))
+                           'potion)))
 
 (add-method interact
             (make-method (list <hero> <chest>)

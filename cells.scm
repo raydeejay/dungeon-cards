@@ -51,11 +51,6 @@
 ;; CALLBACK
 (define make-callback (make-generic))
 
-(define (open-chest pos)
-  (vector-set! *field* pos (make <coin>))
-  (glgui-widget-delete gui-canvas (slot-ref (vector-ref cells pos) 'container))
-  (vector-set! cells pos (make (slot-ref (vector-ref *field* pos) 'widget-class) gui-canvas pos)))
-
 (define (move-to-front w)
   ;; move the widget to the back of the gui's widget-list to ensure it's drawn on top of anything else
   (let ((lista (table-ref gui-canvas 'widget-list)))
@@ -65,21 +60,32 @@
                                       (equal? x w)))))
                   (append (list-delete-item lista (car h)) h)))))
 
-(define (add-particles to)
+;; not used because the "engine" is a bit broken...
+(define *particle-engine* #f)
+
+(define (add-particle image x y cx cy ttl fn)
+  (let ((part (glgui-sprite gui-particles 'x x 'y x 'image image)))
+    (add-to-ticker *ticker* ttl
+                   (lambda (t d)
+                     (glgui-widget-set! gui-particles part 'x (fn x (+ x cx) t d))
+                     (glgui-widget-set! gui-particles part 'y (fn y (+ y cy) t d)))
+                   (lambda ()
+                     (glgui-widget-delete gui-particles part)))))
+
+(define (add-particles image to)
   ;; add some particles
   (let ((x0 (+ 60 (slot->x to)))
         (y0 (+ 80 (slot->y to)))
         (targets `((50 . 70) (-50 . 70) (50 . -70) (-50 . -70))))
+    ;; TODO fix the particle engine xD
+    ;;(add-source *particle-engine* (make-particle-source x0 y0 simple-update-particle make-particle1))
     (do ((i 0 (+ i 1))) ((= i 4))
-      (let ((part (glgui-sprite gui-particles 'x x0 'y x0 'image star.img)))
-        (add-to-ticker *ticker* 30
-                       (lambda (t d)
-                         (glgui-widget-set! gui-particles part 'x
-                                            (easeinout-quad x0 (+ x0 (car (nth i targets))) t d))
-                         (glgui-widget-set! gui-particles part 'y
-                                            (easeinout-quad y0 (+ y0 (cdr (nth i targets))) t d)))
-                       (lambda ()
-                         (glgui-widget-delete gui-particles part)))))))
+      (add-particle image x0 y0 (car (nth i targets)) (cdr (nth i targets)) 30 easeinout-quad))))
+
+(define (open-chest pos)
+  (vector-set! *field* pos (make <coin>))
+  (glgui-widget-delete gui-canvas (slot-ref (vector-ref cells pos) 'container))
+  (vector-set! cells pos (make (slot-ref (vector-ref *field* pos) 'widget-class) gui-canvas pos)))
 
 (define (kill-cell from to)
   ;; move the widget to the back of the gui's widget-list to ensure it's drawn on top of anything else
@@ -113,6 +119,7 @@
                    ;; update the stats displays and such
                    (update-gui))))
 
+;; create a function to execute when a cell is clicked (so, more or less, a turn function)
 (define-method make-callback (<cell>) (cell)
   (lambda args
     ;; (pretty-print (table->list (car args))) (newline)
@@ -122,9 +129,11 @@
       (if (can-interact? from to)
           (let ((action (interact (vector-ref *field* from) (vector-ref *field* to))))
             (case action
-              ((open-chest) (open-chest to) (update-gui) (add-particles to))
-              ((#t) (kill-cell from to) (add-particles to))
-              ((#f) (update-gui))))))
+              ((open-chest) (open-chest to) (update-gui) (add-particles diamond.img to))
+              ((potion) (kill-cell from to) (add-particles heart.img to))
+              ((coin) (kill-cell from to) (add-particles smallcoin.img to))
+              ((#t) (kill-cell from to) (add-particles attack.img to))
+              ((#f) (update-gui) (add-particles star.img to))))))
     ;; check for death
     (if (< (slot-ref *hero* 'hp) 1)
         (begin (let ((m (settings-ref "money")))
