@@ -112,6 +112,22 @@
   ;; (glgui-widget-set! gui-particles (<- obj sprite) 'angle (<- obj angle))
   (table-set! (<- obj sprite) 'x (<- obj position x))
   (table-set! (<- obj sprite) 'y (<- obj position y))
+(define destroy (make-generic))
+(define-method destroy (<particle-source>) (obj)
+  (slot-set! obj 'particles
+             (vector-map (lambda (x)
+                           (glgui-widget-delete gui-particles (<- x sprite))
+                           #f)
+                         (<- obj particles))))
+
+(define remove-source (make-generic))
+(define-method remove-source (<particle-engine> <particle-source>) (obj source)
+  ;; destroy the particles
+  ;; or... allow them to finish? maybe the particle engine should
+  ;; manage the particles that the sources produce
+  (destroy source)
+  (slot-set! obj 'sources (list-delete-item (<- obj sources) source)))
+
   (table-set! (<- obj sprite) 'angle (<- obj angle)))
 
 (define-method draw (<particle-source>) (obj)
